@@ -19,8 +19,10 @@ function App() {
   
   const createTodo = (e) => {
     e.preventDefault();
-    setTodos([...todos, {id: lastId.current, content: e.target.content.value, isCheck: false}]);
-    lastId.current++;
+    if(e.target.content.value != ''){
+      setTodos([...todos, {id: lastId.current, content: e.target.content.value, isCheck: false}]);
+      lastId.current++;
+    }
     e.target.content.value = '';
   }
 
@@ -43,20 +45,15 @@ function App() {
 
   const saveTodo = (id, e) => {
     e.preventDefault();
+    if(e.target.content.value != ''){
     const updateTodos = todos.map(todo => todo.id == id ? {...todo, content: e.target.content.value }: todo);
     setTodos(updateTodos);
     setEditingId(null);
+    }
   }
 
   const today = new Date();
-  const dateString = today.toLocaleString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
 
-  
-  
   const count = todos.filter(todo => !todo.isCheck).length;
 
   return (
@@ -64,13 +61,12 @@ function App() {
 
     <div className="App">
 
-      <Nav headerName="Todo리스트" dateString={dateString} count={count}/>
+      <Nav headerName="Todo리스트" today={today} count={count}/>
 
       <Insert createTodo={createTodo}></Insert>
       
       <Items editingId={editingId} todos={todos} checkTodo={checkTodo} deleteTodo={deleteTodo} modifyTodo={modifyTodo} saveTodo={saveTodo}></Items>
 
-      
     </div>
   );
 }
