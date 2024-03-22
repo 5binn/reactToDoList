@@ -1,6 +1,9 @@
 // import
 
 import { useRef, useState } from "react";
+import Nav from "./components/Nav";
+import Insert from "./components/Insert";
+import Items from "./components/Items";
 
 
 function App() {
@@ -31,6 +34,7 @@ function App() {
     setTodos(updateTodos);
     console.log(updateTodos);
   }
+
   const [editingId, setEditingId] = useState(null);
 
   const modifyTodo = (id) => {
@@ -59,33 +63,13 @@ function App() {
     //뷰 영역
 
     <div className="App">
-      <h2>ToDo리스트</h2>
-      <h3>{dateString}</h3>
-      <h4>남은 할 일 {count}개</h4>
-      <form onSubmit={(e) => createTodo(e)}>
-        <input name="content"/>
-        <button type="submit">등록</button>
-      </form>
-      
-      
-      <ul>
-        {todos.map((todo) => 
-        <li key={todo.id}>
-          <input type="checkbox" checked={todo.isCheck} onChange={() => checkTodo(todo.id)}></input>
-          <span>{todo.content}</span>
-          {editingId == todo.id ? (
-            <form onSubmit={(e) => saveTodo(todo.id, e)}>
-              <input name="content"></input>
-              <button type="submit">저장</button>
-            </form>
-          ) : (<></>)}
-          <button onClick={() => modifyTodo(todo.id)}>수정</button>
-          <button onClick={() => deleteTodo(todo.id)}>삭제</button>
-        </li>
-        )}
-       
 
-      </ul>
+      <Nav headerName="Todo리스트" dateString={dateString} count={count}/>
+
+      <Insert createTodo={createTodo}></Insert>
+      
+      <Items editingId={editingId} todos={todos} checkTodo={checkTodo} deleteTodo={deleteTodo} modifyTodo={modifyTodo} saveTodo={saveTodo}></Items>
+
       
     </div>
   );
